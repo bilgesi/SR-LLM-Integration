@@ -49,7 +49,7 @@ class GAWeightOptimizer:
         llm_name,
         pop_size=20,
         generations=5,
-        mutation_rate=0.1,
+        mutation_rate=0.3,
         results_csv="all_ga_logs.csv",
         prompt_text="",
     ):
