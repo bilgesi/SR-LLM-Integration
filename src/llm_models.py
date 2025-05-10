@@ -84,16 +84,34 @@ class LlamaLLM(AbstractLLM):
             temperature=0.1,
             top_p=0.7,
             top_k=40,
-            do_sample=True
+            do_sample=False
         )
 
     def evaluate_equation(self, equation_str: str, context: Optional[str] = None) -> float:
-        prompt = f"""Evaluate the following mathematical equation for dimensional correctness, 
-simplicity, and scientific plausibility. Return a list like: [dim_corr, simp, sim, "feedback"].
+        prompt = f"""### ROLE
+You are an expert scientific-reasoning assistant.
+Return ONLY a Python-style list: [dim_corr, simp, sim, \"feedback\"]
 
-Equation:
+### METRICS
+dim_corr . 0 (wrong) → 1 (perfect)
+simp     . 0 (complex) → 1 (simple)
+sim      . 0 (unrealistic) → 1 (realistic)
+
+### FEW-SHOT EXAMPLES
+#1 Equation: x = v0 * t + 0.5 * g * t^2
+   Output:  [0.95, 0.80, 0.92, \"Classic kinematics\"]
+#2 Equation: E = m + c
+   Output:  [0.05, 0.70, 0.15, \"Units mismatch\"]
+#3 Equation: y = sin(sin(x))
+   Output:  [0.90, 0.10, 0.40, \"Needless nesting\"]
+
+### TASK
+Equation to evaluate:
 {equation_str}
-"""
+
+{f"Context:\n{context}" if context else ""}
+
+Think step-by-step silently, then output the list only."""
         out = self.pipe(prompt, num_return_sequences=1, max_new_tokens=128)
         return parse_llm_response(out[0]["generated_text"])
 
@@ -136,16 +154,34 @@ class FalconLLM(AbstractLLM):
             temperature=0.1,
             top_p=0.7,
             top_k=40,
-            do_sample=True
+            do_sample=False
         )
 
     def evaluate_equation(self, equation_str: str, context: Optional[str] = None) -> float:
-        prompt = f"""Evaluate the following mathematical equation for dimensional correctness, 
-simplicity, and scientific plausibility. Return a list like: [dim_corr, simp, sim, "feedback"].
+        prompt = f"""### ROLE
+You are an expert scientific-reasoning assistant.
+Return ONLY a Python-style list: [dim_corr, simp, sim, \"feedback\"]
 
-Equation:
+### METRICS
+dim_corr . 0 (wrong) → 1 (perfect)
+simp     . 0 (complex) → 1 (simple)
+sim      . 0 (unrealistic) → 1 (realistic)
+
+### FEW-SHOT EXAMPLES
+#1 Equation: x = v0 * t + 0.5 * g * t^2
+   Output:  [0.95, 0.80, 0.92, \"Classic kinematics\"]
+#2 Equation: E = m + c
+   Output:  [0.05, 0.70, 0.15, \"Units mismatch\"]
+#3 Equation: y = sin(sin(x))
+   Output:  [0.90, 0.10, 0.40, \"Needless nesting\"]
+
+### TASK
+Equation to evaluate:
 {equation_str}
-"""
+
+{f"Context:\n{context}" if context else ""}
+
+Think step-by-step silently, then output the list only."""
         out = self.pipe(prompt, num_return_sequences=1, max_new_tokens=128)
         return parse_llm_response(out[0]["generated_text"])
 
@@ -191,7 +227,7 @@ class MistralLLM(AbstractLLM):
             temperature=0.1,
             top_p=0.7,
             top_k=40,
-            do_sample=True
+            do_sample=False
         )
 
     def evaluate_equation(self, equation_str: str, context: Optional[str] = None) -> float:
@@ -199,19 +235,30 @@ class MistralLLM(AbstractLLM):
         if key in self.cache:
             return self.cache[key]
 
-        prompt = f"""You are a scientific assistant.
+        prompt = f"""### ROLE
+You are an expert scientific-reasoning assistant.
+Return ONLY a Python-style list: [dim_corr, simp, sim, \"feedback\"]
 
-Context:
-{context or ""}
+### METRICS
+dim_corr . 0 (wrong) → 1 (perfect)
+simp     . 0 (complex) → 1 (simple)
+sim      . 0 (unrealistic) → 1 (realistic)
 
-Task:
-Evaluate the symbolic equation below for:
-(1) dimensional correctness, (2) simplicity, and (3) scientific plausibility.
-Respond ONLY with a list: [dim_corr, simp, sim, "short feedback"].
+### FEW-SHOT EXAMPLES
+#1 Equation: x = v0 * t + 0.5 * g * t^2
+   Output:  [0.95, 0.80, 0.92, \"Classic kinematics\"]
+#2 Equation: E = m + c
+   Output:  [0.05, 0.70, 0.15, \"Units mismatch\"]
+#3 Equation: y = sin(sin(x))
+   Output:  [0.90, 0.10, 0.40, \"Needless nesting\"]
 
-Equation:
+### TASK
+Equation to evaluate:
 {equation_str}
-"""
+
+{f"Context:\n{context}" if context else ""}
+
+Think step-by-step silently, then output the list only."""
         out = self.pipe(prompt, num_return_sequences=1, max_new_tokens=128)
         score = parse_llm_response(out[0]["generated_text"])
         self.cache[key] = score
@@ -255,16 +302,34 @@ class HuggingFaceLLM(AbstractLLM):
             temperature=0.1,
             top_p=0.7,
             top_k=40,
-            do_sample=True
+            do_sample=False
         )
 
     def evaluate_equation(self, equation_str: str, context: Optional[str] = None) -> float:
-        prompt = f"""Evaluate the following mathematical equation for dimensional correctness, 
-simplicity, and scientific plausibility. Return a list like: [dim_corr, simp, sim, "feedback"].
+        prompt = f"""### ROLE
+You are an expert scientific-reasoning assistant.
+Return ONLY a Python-style list: [dim_corr, simp, sim, \"feedback\"]
 
-Equation:
+### METRICS
+dim_corr . 0 (wrong) → 1 (perfect)
+simp     . 0 (complex) → 1 (simple)
+sim      . 0 (unrealistic) → 1 (realistic)
+
+### FEW-SHOT EXAMPLES
+#1 Equation: x = v0 * t + 0.5 * g * t^2
+   Output:  [0.95, 0.80, 0.92, \"Classic kinematics\"]
+#2 Equation: E = m + c
+   Output:  [0.05, 0.70, 0.15, \"Units mismatch\"]
+#3 Equation: y = sin(sin(x))
+   Output:  [0.90, 0.10, 0.40, \"Needless nesting\"]
+
+### TASK
+Equation to evaluate:
 {equation_str}
-"""
+
+{f"Context:\n{context}" if context else ""}
+
+Think step-by-step silently, then output the list only."""
         out = self.pipe(prompt, num_return_sequences=1, max_new_tokens=128)
         return parse_llm_response(out[0]["generated_text"])
 
