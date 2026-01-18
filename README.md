@@ -77,16 +77,18 @@ These dependencies are the basic functional dependencies of the project, please 
 If you use this work, please cite:
 
 ```bibtex
-@article{taskin2026knowledge_integration_pisr,
-  title   = {Knowledge integration for physics-informed symbolic regression using pre-trained large language models},
+@article{Taskin2026,
   author  = {Taskin, Bilge and Xie, Wenxiong and Lazebnik, Teddy},
+  title   = {Knowledge integration for physics-informed symbolic regression using pre-trained large language models},
   journal = {Scientific Reports},
-  volume  = {16},
-  pages   = {1614},
   year    = {2026},
+  volume  = {16},
+  number  = {1},
+  pages   = {1614},
   doi     = {10.1038/s41598-026-35327-6},
   url     = {https://doi.org/10.1038/s41598-026-35327-6}
 }
+
 
 
 <a name="contributing"/>
